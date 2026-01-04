@@ -2,21 +2,7 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 const plugins = [
   // ...,
-  {
-    resolve: `medusa-plugin-sendgrid`,
-    options: {
-      api_key: process.env.SENDGRID_API_KEY,
-      from: process.env.SENDGRID_FROM,
-      order_placed_template:
-        process.env.SENDGRID_ORDER_PLACED_ID,
-      localization: {
-        "de-DE": { // locale key
-          order_placed_template:
-            process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
-        },
-      },
-    },
-  },
+ 
 ]
 module.exports = defineConfig({
   modules: [
@@ -38,25 +24,31 @@ module.exports = defineConfig({
         ],
       },
     },
-    /////////Alvara tax
-    ///////////////////////SENDGRID
-    {
+
+
+{
       resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
-          // ...
           {
-            resolve: "@medusajs/medusa/notification-sendgrid",
-            id: "sendgrid",
+            resolve: "./src/modules/email-notifications",
+            id: "resend",
             options: {
               channels: ["email"],
-              api_key: process.env.SENDGRID_API_KEY,
-              from: process.env.SENDGRID_FROM,
+              api_key: process.env.RESEND_API_KEY,
+              from: process.env.RESEND_FROM_EMAIL,
             },
           },
         ],
-      },
-    },
+        },
+        
+        },
+
+
+
+
+
+
   ],
   projectConfig: {
     /// databaseUrl: process.env.DATABASE_URL,
